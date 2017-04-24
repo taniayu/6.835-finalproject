@@ -44,8 +44,28 @@ DEFINE_GUID(CLSID_ExpectedRecognizer, 0x495648e7, 0xf7ab, 0x4267, 0x8e, 0x0f, 0x
 /// <returns>status</returns>
 int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
 {
-    CSkeletonBasics application;
-    application.Run(hInstance, nCmdShow);
+	if (CLSID_ExpectedRecognizer != CLSID_SpInprocRecognizer)
+	{
+		MessageBoxW(NULL, L"This sample was compiled against an incompatible version of sapi.h.\nPlease ensure that Microsoft Speech SDK and other sample requirements are installed and then rebuild application.", L"Missing requirements", MB_OK | MB_ICONERROR);
+
+		return EXIT_FAILURE;
+	}
+
+	HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+	if (SUCCEEDED(hr))
+	{
+		{
+			CSkeletonBasics application;
+			application.Run(hInstance, nCmdShow);
+		}
+
+		CoUninitialize();
+	}
+
+	return EXIT_SUCCESS;
+    /*CSkeletonBasics application;
+    application.Run(hInstance, nCmdShow);*/
 }
 
 /// <summary>
@@ -184,9 +204,6 @@ void CSkeletonBasics::Update()
 	if (WAIT_OBJECT_0 == WaitForSingleObject(m_hNextSkeletonEvent, 0))
 	{
 		ProcessSkeleton();
-	}
-	if (WAIT_OBJECT_0 == WaitForSingleObject(m_hSpeechEvent, 0))
-	{
 		ProcessSpeech();
 	}
 }
@@ -317,7 +334,7 @@ HRESULT CSkeletonBasics::CreateFirstConnected()
     if (NULL != m_pNuiSensor)
     {
         // Initialize the Kinect and specify that we'll be using skeleton
-        hr = m_pNuiSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON); 
+        hr = m_pNuiSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON | NUI_INITIALIZE_FLAG_USES_AUDIO); 
         if (SUCCEEDED(hr))
         {
             // Create an event that will be signaled when skeleton data is available
@@ -881,7 +898,7 @@ void CSkeletonBasics::ProcessSpeech()
 
 	m_pSpeechContext->GetEvents(1, &curEvent, &fetched);
 
-	while (fetched > 0)
+		while (fetched > 0)
 	{
 		switch (curEvent.eEventId)
 		{
