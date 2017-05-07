@@ -1,0 +1,23 @@
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\ShapeGame.exe.config
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\ShapeGame.exe
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\ShapeGame.pdb
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\Microsoft.Kinect.dll
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\Microsoft.Kinect.Toolkit.dll
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\Microsoft.Speech.dll
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\Microsoft.Kinect.Toolkit.pdb
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\bin\Debug\Microsoft.Kinect.xml
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\ShapeGame.csprojResolveAssemblyReference.cache
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\MainWindow.baml
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\MainWindow.g.cs
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\App.g.cs
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\ShapeGame_MarkupCompile.cache
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\ShapeGame.g.resources
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\ShapeGame.Properties.Resources.resources
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\ShapeGame.csproj.GenerateResource.Cache
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\ShapeGame.exe
+C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\ShapeGame.pdb
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\ShapeGame2\bin\Debug\ShapeGame.exe.config
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\ShapeGame2\obj\Debug\ShapeGame.exe
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\ShapeGame2\obj\Debug\ShapeGame.pdb
