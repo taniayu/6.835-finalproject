@@ -86,6 +86,8 @@ namespace ShapeGame
         private List<Double> shoulderCenterXPosition = new List<Double>(new double[FRAME_SIZE]);
         private List<Double> shoulderCenterYPosition = new List<Double>(new double[FRAME_SIZE]);
 
+        private int protegoDuration = 0;
+
         private SpeechRecognizer mySpeechRecognizer;
         #endregion Private State
 
@@ -493,13 +495,21 @@ namespace ShapeGame
                     this.shoulderCenterYPosition.RemoveAt(0);
                     this.shoulderCenterYPosition.Add(rightShoulderData.Segment.Y1);
 
+                    //if (this.protegoDuration > 0)
+                    //{
+                    //    this.protegoDuration -= 1;
+                    //}
+                    //else
+                    //{
+                    //    this.myFallingThings.RemoveShape(PolyType.Circle);
+                    //}
+
 
                     bool hit = this.myFallingThings.CheckPlayerHit(pair.Value.Segments, pair.Value.GetId());
                     if (hit)
                     {
                         // Game over
-                        this.myFallingThings.SetDropRate(0);
-                        this.myFallingThings.SetGravity(0);
+                        this.myFallingThings.PauseGame();
                         FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Game over!");
                     }
                     //HitType hit = this.myFallingThings.LookForHits(pair.Value.Segments, pair.Value.GetId());
@@ -542,33 +552,35 @@ namespace ShapeGame
             switch (e.Verb)
             {
                 case SpeechRecognizer.Verbs.Protego:
-                    double averageXWristPosition = this.rightWristXPosition.Sum() / 10;
-                    double averageYWristPosition = this.rightWristYPosition.Sum() / 10;
-                    double averageXBodyPosition = this.shoulderCenterXPosition.Sum() / 10;
-                    double averageYBodyPosition = this.shoulderCenterYPosition.Sum() / 10;
-                    if (Math.Pow(averageXWristPosition - averageXBodyPosition, 2) + Math.Pow(averageYWristPosition - averageYBodyPosition, 2) < 400)
+                    double averageXWristPosition = this.rightWristXPosition.Sum() / FRAME_SIZE;
+                    double averageYWristPosition = this.rightWristYPosition.Sum() / FRAME_SIZE;
+                    double averageXBodyPosition = this.shoulderCenterXPosition.Sum() / FRAME_SIZE;
+                    double averageYBodyPosition = this.shoulderCenterYPosition.Sum() / FRAME_SIZE;
+                    if (Math.Pow(averageXWristPosition - averageXBodyPosition, 2) + Math.Pow(averageYWristPosition - averageYBodyPosition, 2) < 800)
                     {
                         this.myFallingThings.moveThingsAway();
                         this.myFallingThings.DrawShape(PolyType.Circle, MaxShapeSize, System.Windows.Media.Color.FromRgb(255, 255, 255));
+                        this.protegoDuration = 50;
                     }
                     break;
                 case SpeechRecognizer.Verbs.Expelliarmus:
-                    double averageXVelocity = this.rightWristXVelocity.Sum() / 10;
+                    double averageXVelocity = this.rightWristXVelocity.Sum() / FRAME_SIZE;
                     double xMoved = this.rightWristXPosition[19] - this.rightWristXPosition[0];
                     if (averageXVelocity > 0 && xMoved > 10)
                     {
                         this.myFallingThings.removeThings();
+                        this.myFallingThings.AddToScore(0, 10, new Point(this.shoulderCenterXPosition.Sum() / FRAME_SIZE, this.shoulderCenterYPosition.Sum() / FRAME_SIZE));
                     }
                     break;
                 case SpeechRecognizer.Verbs.Stupefy:
-                    double averageYVelocity = this.rightWristYVelocity.Sum() / 10;
+                    double averageYVelocity = this.rightWristYVelocity.Sum() / FRAME_SIZE;
                     if (averageYVelocity < 0)
                     //if (true)
                     {
                         this.myFallingThings.SetSpinRate(0);
                         this.myFallingThings.SetDropRate(0);
                         this.myFallingThings.SetGravity(0);
-                        //this.myFallingThings.AddToScore(0, 5, new Point());
+                        this.myFallingThings.AddToScore(0, 5, new Point(this.shoulderCenterXPosition.Sum() / FRAME_SIZE, this.shoulderCenterYPosition.Sum() / FRAME_SIZE));
                     }
                     break;
                 case SpeechRecognizer.Verbs.Pause:

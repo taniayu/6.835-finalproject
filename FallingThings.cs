@@ -64,6 +64,9 @@ namespace ShapeGame
         private PolyType polyTypes = PolyType.All;
         private DateTime gameStartTime;
 
+        private int score;
+        private bool gamePaused = false;
+
         public FallingThings(int maxThings, double framerate, int intraFrames)
         {
             this.maxThings = maxThings;
@@ -152,6 +155,7 @@ namespace ShapeGame
 
             this.gameStartTime = DateTime.Now;
             this.scores.Clear();
+            this.gamePaused = false;
         }
 
         public void SetGameMode(GameMode mode)
@@ -197,8 +201,21 @@ namespace ShapeGame
             this.polyTypes = polies;
         }
 
+        public void PauseGame()
+        {
+            SetDropRate(0);
+            SetGravity(0);
+            SetSpinRate(0);
+            this.gamePaused = true;
+        }
+
         public bool CheckPlayerHit(Dictionary<Bone, BoneData> segments, int playerId)
         {
+            if (this.gamePaused)
+            {
+                return false;
+            }
+
             DateTime cur = DateTime.Now;
             HitType allHits = HitType.None;
 
@@ -214,6 +231,10 @@ namespace ShapeGame
                 {
                     HitType hit = HitType.None;
                     Thing thing = this.things[i];
+                    if (thing.Shape == PolyType.Circle)
+                    {
+                        continue;
+                    }
                     switch (thing.State)
                     {
                         case ThingState.Bouncing:
@@ -402,6 +423,19 @@ namespace ShapeGame
             
         }
 
+        public void RemoveShape(PolyType shape)
+        {
+            for (int thingIndex = 0; thingIndex < this.things.Count; thingIndex++)
+            {
+                Thing thing = this.things[thingIndex];
+                if (thing.Shape == shape)
+                {
+                    this.things.Remove(thing);
+                }
+                thingIndex--;
+            }
+        }
+
         public void moveThingsAway()
         {
             for (int i = 0; i<this.things.Count; i++)
@@ -569,24 +603,24 @@ namespace ShapeGame
             }
 
             // Show scores
-            if (this.scores.Count != 0)
-            {
-                int i = 0;
-                foreach (var score in this.scores)
-                {
-                    Label label = MakeSimpleLabel(
-                        score.Value.ToString(CultureInfo.InvariantCulture),
-                        new Rect(
-                            (0.02 + (i * 0.6)) * this.sceneRect.Width,
-                            0.01 * this.sceneRect.Height,
-                            0.4 * this.sceneRect.Width,
-                            0.3 * this.sceneRect.Height), 
-                            new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 255, 255, 255)));
-                    label.FontSize = Math.Max(1, Math.Min(this.sceneRect.Width / 12, this.sceneRect.Height / 12));
-                    children.Add(label);
-                    i++;
-                }
-            }
+            //if (this.scores.Count != 0)
+            //{
+            //int i = 0;
+            //foreach (var score in this.scores)
+            //{
+            Label label = MakeSimpleLabel(
+                score.ToString(CultureInfo.InvariantCulture),
+                new Rect(
+                    0.02 * this.sceneRect.Width,
+                    0.01 * this.sceneRect.Height,
+                    0.4 * this.sceneRect.Width,
+                    0.3 * this.sceneRect.Height), 
+                    new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 255, 255, 255)));
+            label.FontSize = Math.Max(1, Math.Min(this.sceneRect.Width / 12, this.sceneRect.Height / 12));
+            children.Add(label);
+                //i++;
+            //}
+            //}
 
             // Show game timer
             if (this.gameMode != GameMode.Off)
@@ -613,14 +647,16 @@ namespace ShapeGame
 
         public void AddToScore(int player, int points, System.Windows.Point center)
         {
-            if (this.scores.ContainsKey(player))
-            {
-                this.scores[player] = this.scores[player] + points;
-            }
-            else
-            {
-                this.scores.Add(player, points);
-            }
+            //if (this.scores.ContainsKey(player))
+            //{
+            //    this.scores[player] = this.scores[player] + points;
+            //}
+            //else
+            //{
+            //    this.scores.Add(player, points);
+            //}
+
+            this.score += points;
 
             FlyingText.NewFlyingText(this.sceneRect.Width / 300, center, "+" + points);
         }
