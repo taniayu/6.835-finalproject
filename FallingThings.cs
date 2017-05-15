@@ -52,11 +52,11 @@ namespace ShapeGame
         private double shapeSize = 1.0;
         private double baseShapeSize = 20;
         private GameMode gameMode = GameMode.Off;
-        private double gravity = BaseGravity;
-        private double gravityX = 0.0001*BaseGravity;
-        private double gravityFactor = 1;
-        private double airFriction = BaseAirFriction;
-        private double airFrictionX = 0.999;
+        private double gravity = 0;
+        private double gravityX =0;
+        private double gravityFactor = 0;
+        private double airFriction = 1;
+        private double airFrictionX = 1;
         private int frameCount;
         private bool doRandomColors = true;
         private double expandingRate = 1.0;
@@ -182,7 +182,7 @@ namespace ShapeGame
             this.gravityFactor = f;
             this.gravity = f * BaseGravity / this.targetFrameRate / Math.Sqrt(this.targetFrameRate) / Math.Sqrt(this.intraFrames);
             this.gravityX = f * BaseGravity / this.targetFrameRate / Math.Sqrt(this.targetFrameRate) / Math.Sqrt(this.intraFrames);
-            this.airFriction = f == 0 ? 0.997 : Math.Exp(Math.Log(1.0 - ((1.0 - BaseAirFriction) / f)) / this.intraFrames);
+            //this.airFriction = f == 0 ? 0.997 : Math.Exp(Math.Log(1.0 - ((1.0 - BaseAirFriction) / f)) / this.intraFrames);
 
             if (f == 0)
             {
@@ -431,8 +431,8 @@ namespace ShapeGame
                 if (thing.Shape == shape)
                 {
                     this.things.Remove(thing);
+                    thingIndex--;
                 }
-                thingIndex--;
             }
         }
 
@@ -441,11 +441,11 @@ namespace ShapeGame
             for (int i = 0; i<this.things.Count; i++)
             {
                 Thing thing = this.things[i];
-                thing.Center.X = this.sceneRect.Right;
+                thing.Center.X = this.sceneRect.Right - thing.Size;
                 this.things[i] = thing;
             }
         }
-        public void AdvanceFrame()
+        public void AdvanceFrame(double shoulderX, double shoulderY)
         {
             // Move all things by one step, accounting for gravity
             for (int thingIndex = 0; thingIndex < this.things.Count; thingIndex++)
@@ -538,7 +538,7 @@ namespace ShapeGame
                 }
                 while ((this.polyTypes & tryType) == 0);
 
-                this.DropNewThing(tryType, this.shapeSize, System.Windows.Media.Color.FromRgb(r, g, b));
+                this.DropNewThing(tryType, this.shapeSize, System.Windows.Media.Color.FromRgb(r, g, b), shoulderX, shoulderY);
             }
         }
 
@@ -711,23 +711,40 @@ namespace ShapeGame
             this.things.Add(newThing);
         }
 
-        private void DropNewThing(PolyType newShape, double newSize, System.Windows.Media.Color newColor)
+        private void DropNewThing(PolyType newShape, double newSize, System.Windows.Media.Color newColor, double shoulderX, double shoulderY)
         {
             // Only drop within the center "square" area 
-            double dropWidth = this.sceneRect.Bottom - this.sceneRect.Top;
-            if (dropWidth > this.sceneRect.Right - this.sceneRect.Left)
+            //double dropWidth = this.sceneRect.Bottom - this.sceneRect.Top;
+            //if (dropWidth > this.sceneRect.Right - this.sceneRect.Left)
+            //{
+            //    dropWidth = this.sceneRect.Right - this.sceneRect.Left;
+            //}
+            if (shoulderX == 0)
             {
-                dropWidth = this.sceneRect.Right - this.sceneRect.Left;
+                shoulderX = (this.sceneRect.Left + this.sceneRect.Right) / 2;
+            }
+            double dropLeft = shoulderX - 50;
+            double dropRight = shoulderX + 50;
+            double dropHeight = this.sceneRect.Bottom - this.sceneRect.Top;
+
+            double num = this.rnd.NextDouble();
+            double xDrop = 0;
+            if (this.rnd.Next(0, 2) == 0)
+            {
+                xDrop = num * (dropLeft - this.sceneRect.Left - newSize) + this.sceneRect.Left + newSize ;
+            } else
+            {
+                xDrop = num * (this.sceneRect.Right - newSize - dropRight) + dropRight;
             }
 
             var newThing = new Thing
             {
                 Size = newSize,
                 //YVelocity = ((0.5 * this.rnd.NextDouble()) - 0.25) / this.targetFrameRate,
-                YVelocity = 0,
-                XVelocity = 0,
+                YVelocity = 0.5 * this.rnd.NextDouble() + 0.5,
+                XVelocity = 0.5 * this.rnd.NextDouble() + 0.5,
                 Shape = newShape,
-                Center = new System.Windows.Point((this.rnd.NextDouble() * dropWidth) + ((this.sceneRect.Left + this.sceneRect.Right - dropWidth) / 2), (this.rnd.NextDouble() * dropWidth) + ((this.sceneRect.Top + this.sceneRect.Bottom - dropWidth) / 2)),
+                Center = new System.Windows.Point(xDrop, (this.rnd.NextDouble() * dropHeight) + ((this.sceneRect.Top + this.sceneRect.Bottom - dropHeight) / 2)),
                 SpinRate = ((this.rnd.NextDouble() * 12.0) - 6.0) * 2.0 * Math.PI / this.targetFrameRate / 4.0,
                 //SpinRate = 0,
                 Theta = 0,

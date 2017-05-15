@@ -15,6 +15,7 @@ namespace ShapeGame
     using System.Windows.Shapes;
     using Microsoft.Kinect;
     using ShapeGame.Utils;
+    using System.Windows.Media.Imaging;
 
     public class Player
     {
@@ -128,16 +129,69 @@ namespace ShapeGame
             foreach (var segment in this.segments)
             {
                 Segment seg = segment.Value.GetEstimatedSegment(cur);
-                if (seg.IsCircle())
+                if (segment.Key.Equals(new Bone(JointType.Head, JointType.Head)))
                 {
-                    var circle = new Ellipse { Width = seg.Radius * 2, Height = seg.Radius * 2 };
-                    circle.SetValue(Canvas.LeftProperty, seg.X1 - seg.Radius);
-                    circle.SetValue(Canvas.TopProperty, seg.Y1 - seg.Radius);
-                    circle.Stroke = this.jointsBrush;
-                    circle.StrokeThickness = 1;
-                    circle.Fill = this.bonesBrush;
-                    children.Add(circle);
+                    Image img = new Image
+                    {
+                        Width = 100,
+                        Height = 100,
+                        Source = new BitmapImage(new Uri("C:/Users/qyn/Desktop/Homework/6.835/finalproject/Images/head.png", UriKind.Absolute)),
+                    };
+
+                    Canvas.SetLeft(img, seg.X1 - img.Width / 2 );
+                    Canvas.SetTop(img, seg.Y1 - img.Height / 2 );
+
+                    children.Add(img);
+                }else if (segment.Key.Equals(new Bone(JointType.HandRight, JointType.WristRight)))
+                    {
+                    Image img = new Image
+                    {
+                        Width = 100,
+                        Height = 100,
+                        Source = new BitmapImage(new Uri("C:/Users/qyn/Desktop/Homework/6.835/finalproject/Images/wand.png", UriKind.Absolute)),
+                    };
+
+                    Canvas.SetLeft(img, seg.X1 - img.Width / 2 -20);
+                    Canvas.SetTop(img, seg.Y1 - img.Height / 2 -10);
+
+                    children.Add(img);
                 }
+                else if (segment.Key.Equals(new Bone(JointType.HandLeft, JointType.WristLeft)))
+                {
+                    Image img = new Image
+                    {
+                        Width = 50,
+                        Height = 50,
+                        Source = new BitmapImage(new Uri("C:/Users/qyn/Desktop/Homework/6.835/finalproject/Images/hand.png", UriKind.Absolute)),
+                    };
+
+                    Canvas.SetLeft(img, seg.X1 - img.Width / 2);
+                    Canvas.SetTop(img, seg.Y1 - img.Height / 2);
+
+                    children.Add(img);
+                }
+                else if (seg.IsCircle())
+                    {
+                        //Image img = new Image
+                        //{
+                        //    Width = 50,
+                        //    Height = 50,
+                        //    Source = new BitmapImage(new Uri("C:/Users/qyn/Desktop/Homework/6.835/finalproject/Images/hand.png", UriKind.Absolute)),
+                        //};
+
+                        //Canvas.SetLeft(img, seg.X1 - img.Width / 2 );
+                        //Canvas.SetTop(img, seg.Y1 - img.Height / 2 );
+                        //var overlayImage = new BitmapImage(new Uri("Images/glove_right.png"));
+                        //drawingContext.DrawImage(overlayImage, new Rect(joint.MappedPoint.X, joint.MappedPoint.Y, overlayImage.Width, overlayImage.Height));
+                        var circle = new Ellipse { Width = seg.Radius * 2, Height = seg.Radius * 2 };
+                        circle.SetValue(Canvas.LeftProperty, seg.X1 - seg.Radius );
+                        circle.SetValue(Canvas.TopProperty, seg.Y1 - seg.Radius );
+                        circle.Stroke = this.jointsBrush;
+                        circle.StrokeThickness = 1;
+                        circle.Fill = this.bonesBrush;
+                        children.Add(circle);
+                    }
+                
             }
 
             // Remove unused players after 1/2 second.

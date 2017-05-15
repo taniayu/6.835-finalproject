@@ -33,13 +33,16 @@ namespace ShapeGame
     /// 
     public partial class MainWindow : Window
     {
+        [DllImport(@"C:\Users\qyn\Desktop\Homework\6.835\finalproject\bin\Debug\grt.dll")]
+        //public static extern DTW CreateInstance();
+
         public static readonly DependencyProperty KinectSensorManagerProperty =
             DependencyProperty.Register(
                 "KinectSensorManager",
                 typeof(KinectSensorManager),
                 typeof(MainWindow),
                 new PropertyMetadata(null));
-
+ 
         #region Private State
         private const int TimerResolution = 2;  // ms
         private const int NumIntraFrames = 3;
@@ -47,10 +50,10 @@ namespace ShapeGame
         private const double MaxFramerate = 70;
         private const double MinFramerate = 15;
         private const double MinShapeSize = 12;
-        private const double MaxShapeSize = 90;
+        private const double MaxShapeSize = 120;
         private const double DefaultDropRate = 2.5;
         private const double DefaultDropSize = 50.0;
-        private const double DefaultDropGravity = 1.0;
+        private const double DefaultDropGravity = 0;
 
         private readonly Dictionary<int, Player> players = new Dictionary<int, Player>();
         private readonly SoundPlayer popSound = new SoundPlayer();
@@ -77,7 +80,7 @@ namespace ShapeGame
         private FallingThings myFallingThings;
         private int playersAlive;
 
-        private static int FRAME_SIZE = 20;
+        private static int FRAME_SIZE = 100;
 
         private List<Double> rightWristXPosition = new List<Double>(new double[FRAME_SIZE]);
         private List<Double> rightWristXVelocity = new List<Double>(new double[FRAME_SIZE]);
@@ -474,13 +477,14 @@ namespace ShapeGame
             // Advance animations, and do hit testing.
             for (int i = 0; i < NumIntraFrames; ++i)
             {
+                BoneData rightShoulderData = new BoneData();
                 foreach (var pair in this.players)
                 {
                     Bone rightArm = new Bone(JointType.WristRight, JointType.ElbowRight);
                     BoneData rightArmData;
                     pair.Value.Segments.TryGetValue(rightArm, out rightArmData);
                     Bone rightShoulder = new Bone(JointType.ShoulderCenter, JointType.ShoulderRight);
-                    BoneData rightShoulderData;
+                    
                     pair.Value.Segments.TryGetValue(rightShoulder, out rightShoulderData);
                     this.rightWristXPosition.RemoveAt(0);
                     this.rightWristXPosition.Add(rightArmData.Segment.X1);
@@ -495,14 +499,14 @@ namespace ShapeGame
                     this.shoulderCenterYPosition.RemoveAt(0);
                     this.shoulderCenterYPosition.Add(rightShoulderData.Segment.Y1);
 
-                    //if (this.protegoDuration > 0)
-                    //{
-                    //    this.protegoDuration -= 1;
-                    //}
-                    //else
-                    //{
-                    //    this.myFallingThings.RemoveShape(PolyType.Circle);
-                    //}
+                    if (this.protegoDuration > 0)
+                    {
+                        this.protegoDuration -= 1;
+                    }
+                    else
+                    {
+                        this.myFallingThings.RemoveShape(PolyType.Circle);
+                    }
 
 
                     bool hit = this.myFallingThings.CheckPlayerHit(pair.Value.Segments, pair.Value.GetId());
@@ -527,7 +531,7 @@ namespace ShapeGame
                     //}
                 }
 
-                this.myFallingThings.AdvanceFrame();
+                this.myFallingThings.AdvanceFrame(rightShoulderData.Segment.X1, rightShoulderData.Segment.Y1);
             }
 
             // Draw new Wpf scene by adding all objects to canvas
@@ -560,12 +564,12 @@ namespace ShapeGame
                     {
                         this.myFallingThings.moveThingsAway();
                         this.myFallingThings.DrawShape(PolyType.Circle, MaxShapeSize, System.Windows.Media.Color.FromRgb(255, 255, 255));
-                        this.protegoDuration = 50;
+                        this.protegoDuration = 300;
                     }
                     break;
                 case SpeechRecognizer.Verbs.Expelliarmus:
                     double averageXVelocity = this.rightWristXVelocity.Sum() / FRAME_SIZE;
-                    double xMoved = this.rightWristXPosition[19] - this.rightWristXPosition[0];
+                    double xMoved = this.rightWristXPosition[FRAME_SIZE - 1] - this.rightWristXPosition[0];
                     if (averageXVelocity > 0 && xMoved > 10)
                     {
                         this.myFallingThings.removeThings();
@@ -574,11 +578,11 @@ namespace ShapeGame
                     break;
                 case SpeechRecognizer.Verbs.Stupefy:
                     double averageYVelocity = this.rightWristYVelocity.Sum() / FRAME_SIZE;
-                    if (averageYVelocity < 0)
+                    if (averageYVelocity > 0)
                     //if (true)
                     {
                         this.myFallingThings.SetSpinRate(0);
-                        this.myFallingThings.SetDropRate(0);
+                        //this.myFallingThings.SetDropRate(0);
                         this.myFallingThings.SetGravity(0);
                         this.myFallingThings.AddToScore(0, 5, new Point(this.shoulderCenterXPosition.Sum() / FRAME_SIZE, this.shoulderCenterYPosition.Sum() / FRAME_SIZE));
                     }
