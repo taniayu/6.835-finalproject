@@ -162,7 +162,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="bg.jpg" />
     <Content Include="grt.dll" />
+    <Resource Include="hand.jpg" />
+    <Resource Include="hand.png" />
+    <Resource Include="head.jpg" />
+    <Resource Include="head.png" />
+    <Resource Include="head_burned.png" />
+    <Resource Include="wand.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

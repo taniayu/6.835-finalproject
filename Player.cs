@@ -135,7 +135,7 @@ namespace ShapeGame
                     {
                         Width = 100,
                         Height = 100,
-                        Source = new BitmapImage(new Uri("C:/Users/qyn/Desktop/Homework/6.835/finalproject/Images/head.png", UriKind.Absolute)),
+                        Source = new BitmapImage(new Uri("head.png", UriKind.Relative)),
                     };
 
                     Canvas.SetLeft(img, seg.X1 - img.Width / 2 );
@@ -148,7 +148,7 @@ namespace ShapeGame
                     {
                         Width = 100,
                         Height = 100,
-                        Source = new BitmapImage(new Uri("C:/Users/qyn/Desktop/Homework/6.835/finalproject/Images/wand.png", UriKind.Absolute)),
+                        Source = new BitmapImage(new Uri("wand.png", UriKind.Relative)),
                     };
 
                     Canvas.SetLeft(img, seg.X1 - img.Width / 2 -20);
@@ -162,7 +162,7 @@ namespace ShapeGame
                     {
                         Width = 50,
                         Height = 50,
-                        Source = new BitmapImage(new Uri("C:/Users/qyn/Desktop/Homework/6.835/finalproject/Images/hand.png", UriKind.Absolute)),
+                        Source = new BitmapImage(new Uri("hand.png", UriKind.Relative)),
                     };
 
                     Canvas.SetLeft(img, seg.X1 - img.Width / 2);

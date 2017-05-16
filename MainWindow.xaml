@@ -10,7 +10,7 @@
             <Grid>
                 <Canvas Margin="0" Name="playfield" Height="688" Width="1300" SizeChanged="PlayfieldSizeChanged">
                     <Canvas.Background>
-                      <ImageBrush ImageSource="C:\Users\qyn\Desktop\Homework\6.835\finalproject\Images\bg.jpg" Stretch="Fill"/>
+                        <ImageBrush ImageSource="C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\Images\bg.jpg" Stretch="Fill"/>
                     </Canvas.Background>
                 </Canvas>
                 <kt:KinectColorViewer Margin="0,18,19,0" HorizontalAlignment="Right" Width="160" Height="120" VerticalAlignment="Top" KinectSensorManager="{Binding}"/>

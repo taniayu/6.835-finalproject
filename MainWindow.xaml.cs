@@ -33,8 +33,8 @@ namespace ShapeGame
     /// 
     public partial class MainWindow : Window
     {
-        [DllImport(@"C:\Users\qyn\Desktop\Homework\6.835\finalproject\bin\Debug\grt.dll")]
-        //public static extern DTW CreateInstance();
+        //[DllImport("grt.dll")]
+        //public static extern double Loadme(double num);
 
         public static readonly DependencyProperty KinectSensorManagerProperty =
             DependencyProperty.Register(
@@ -80,7 +80,7 @@ namespace ShapeGame
         private FallingThings myFallingThings;
         private int playersAlive;
 
-        private static int FRAME_SIZE = 100;
+        private static int FRAME_SIZE = 200;
 
         private List<Double> rightWristXPosition = new List<Double>(new double[FRAME_SIZE]);
         private List<Double> rightWristXVelocity = new List<Double>(new double[FRAME_SIZE]);
@@ -92,6 +92,8 @@ namespace ShapeGame
         private int protegoDuration = 0;
 
         private SpeechRecognizer mySpeechRecognizer;
+
+        //public double dllResult = 0;
         #endregion Private State
 
         #region ctor + Window Events
@@ -103,6 +105,7 @@ namespace ShapeGame
             this.DataContext = this.KinectSensorManager;
 
             InitializeComponent();
+
 
             this.SensorChooserUI.KinectSensorChooser = sensorChooser;
             sensorChooser.Start();
@@ -165,6 +168,9 @@ namespace ShapeGame
             var myGameThread = new Thread(this.GameThread);
             myGameThread.SetApartmentState(ApartmentState.STA);
             myGameThread.Start();
+
+
+            //dllResult = Loadme(2.0);
 
             FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Shapes!");
         }
@@ -552,15 +558,18 @@ namespace ShapeGame
         #region Kinect Speech processing
         private void RecognizerSaidSomething(object sender, SpeechRecognizer.SaidSomethingEventArgs e)
         {
-            FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), e.Matched);
+            //FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), e.Matched);
             switch (e.Verb)
             {
                 case SpeechRecognizer.Verbs.Protego:
+                    FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Protego");
                     double averageXWristPosition = this.rightWristXPosition.Sum() / FRAME_SIZE;
                     double averageYWristPosition = this.rightWristYPosition.Sum() / FRAME_SIZE;
                     double averageXBodyPosition = this.shoulderCenterXPosition.Sum() / FRAME_SIZE;
                     double averageYBodyPosition = this.shoulderCenterYPosition.Sum() / FRAME_SIZE;
-                    if (Math.Pow(averageXWristPosition - averageXBodyPosition, 2) + Math.Pow(averageYWristPosition - averageYBodyPosition, 2) < 800)
+                    double dist = Math.Pow(averageXWristPosition - averageXBodyPosition, 2) + Math.Pow(averageYWristPosition - averageYBodyPosition, 2);
+                    //FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), dist.ToString());
+                    if (dist < 3000)
                     {
                         this.myFallingThings.moveThingsAway();
                         this.myFallingThings.DrawShape(PolyType.Circle, MaxShapeSize, System.Windows.Media.Color.FromRgb(255, 255, 255));
@@ -568,15 +577,18 @@ namespace ShapeGame
                     }
                     break;
                 case SpeechRecognizer.Verbs.Expelliarmus:
-                    double averageXVelocity = this.rightWristXVelocity.Sum() / FRAME_SIZE;
-                    double xMoved = this.rightWristXPosition[FRAME_SIZE - 1] - this.rightWristXPosition[0];
-                    if (averageXVelocity > 0 && xMoved > 10)
+                    FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Expelliarmus");
+                    double averageXVelocity = this.rightWristXVelocity.Take(Convert.ToInt32(FRAME_SIZE / 3)).Sum() * 3 / FRAME_SIZE;
+                    //double xMoved = this.rightWristXPosition[Convert.ToInt32(FRAME_SIZE / 3)] - this.rightWristXPosition[0];
+                    //FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), averageXVelocity.ToString());
+                    if (averageXVelocity > 0)
                     {
                         this.myFallingThings.removeThings();
                         this.myFallingThings.AddToScore(0, 10, new Point(this.shoulderCenterXPosition.Sum() / FRAME_SIZE, this.shoulderCenterYPosition.Sum() / FRAME_SIZE));
                     }
                     break;
                 case SpeechRecognizer.Verbs.Stupefy:
+                    FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Stupefy");
                     double averageYVelocity = this.rightWristYVelocity.Sum() / FRAME_SIZE;
                     if (averageYVelocity > 0)
                     //if (true)
@@ -587,15 +599,16 @@ namespace ShapeGame
                         this.myFallingThings.AddToScore(0, 5, new Point(this.shoulderCenterXPosition.Sum() / FRAME_SIZE, this.shoulderCenterYPosition.Sum() / FRAME_SIZE));
                     }
                     break;
-                case SpeechRecognizer.Verbs.Pause:
-                    this.myFallingThings.SetDropRate(0);
-                    this.myFallingThings.SetGravity(0);
-                    break;
+                //case SpeechRecognizer.Verbs.Pause:
+                //    this.myFallingThings.SetDropRate(0);
+                //    this.myFallingThings.SetGravity(0);
+                //    break;
                 case SpeechRecognizer.Verbs.Resume:
                     this.myFallingThings.SetDropRate(this.dropRate);
                     this.myFallingThings.SetGravity(this.dropGravity);
                     break;
                 case SpeechRecognizer.Verbs.Reset:
+                    FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Reset");
                     this.dropRate = DefaultDropRate;
                     this.dropSize = DefaultDropSize;
                     this.dropGravity = DefaultDropGravity;
@@ -606,71 +619,71 @@ namespace ShapeGame
                     this.myFallingThings.SetShapesColor(System.Windows.Media.Color.FromRgb(0, 0, 0), true);
                     this.myFallingThings.Reset();
                     break;
-                case SpeechRecognizer.Verbs.DoShapes:
-                    this.myFallingThings.SetPolies(e.Shape);
-                    break;
-                case SpeechRecognizer.Verbs.RandomColors:
-                    this.myFallingThings.SetShapesColor(System.Windows.Media.Color.FromRgb(0, 0, 0), true);
-                    break;
-                case SpeechRecognizer.Verbs.Colorize:
-                    this.myFallingThings.SetShapesColor(e.RgbColor, false);
-                    break;
-                case SpeechRecognizer.Verbs.ShapesAndColors:
-                    this.myFallingThings.SetPolies(e.Shape);
-                    this.myFallingThings.SetShapesColor(e.RgbColor, false);
-                    break;
-                case SpeechRecognizer.Verbs.More:
-                    this.dropRate *= 1.5;
-                    this.myFallingThings.SetDropRate(this.dropRate);
-                    break;
-                case SpeechRecognizer.Verbs.Fewer:
-                    this.dropRate /= 1.5;
-                    this.myFallingThings.SetDropRate(this.dropRate);
-                    break;
-                case SpeechRecognizer.Verbs.Bigger:
-                    this.dropSize *= 1.5;
-                    if (this.dropSize > MaxShapeSize)
-                    {
-                        this.dropSize = MaxShapeSize;
-                    }
+                //case SpeechRecognizer.Verbs.DoShapes:
+                //    this.myFallingThings.SetPolies(e.Shape);
+                //    break;
+                //case SpeechRecognizer.Verbs.RandomColors:
+                //    this.myFallingThings.SetShapesColor(System.Windows.Media.Color.FromRgb(0, 0, 0), true);
+                //    break;
+                //case SpeechRecognizer.Verbs.Colorize:
+                //    this.myFallingThings.SetShapesColor(e.RgbColor, false);
+                //    break;
+                //case SpeechRecognizer.Verbs.ShapesAndColors:
+                //    this.myFallingThings.SetPolies(e.Shape);
+                //    this.myFallingThings.SetShapesColor(e.RgbColor, false);
+                //    break;
+                //case SpeechRecognizer.Verbs.More:
+                //    this.dropRate *= 1.5;
+                //    this.myFallingThings.SetDropRate(this.dropRate);
+                //    break;
+                //case SpeechRecognizer.Verbs.Fewer:
+                //    this.dropRate /= 1.5;
+                //    this.myFallingThings.SetDropRate(this.dropRate);
+                //    break;
+                //case SpeechRecognizer.Verbs.Bigger:
+                //    this.dropSize *= 1.5;
+                //    if (this.dropSize > MaxShapeSize)
+                //    {
+                //        this.dropSize = MaxShapeSize;
+                //    }
 
-                    this.myFallingThings.SetSize(this.dropSize);
-                    break;
-                case SpeechRecognizer.Verbs.Biggest:
-                    this.dropSize = MaxShapeSize;
-                    this.myFallingThings.SetSize(this.dropSize);
-                    break;
-                case SpeechRecognizer.Verbs.Smaller:
-                    this.dropSize /= 1.5;
-                    if (this.dropSize < MinShapeSize)
-                    {
-                        this.dropSize = MinShapeSize;
-                    }
+                //    this.myFallingThings.SetSize(this.dropSize);
+                //    break;
+                //case SpeechRecognizer.Verbs.Biggest:
+                //    this.dropSize = MaxShapeSize;
+                //    this.myFallingThings.SetSize(this.dropSize);
+                //    break;
+                //case SpeechRecognizer.Verbs.Smaller:
+                //    this.dropSize /= 1.5;
+                //    if (this.dropSize < MinShapeSize)
+                //    {
+                //        this.dropSize = MinShapeSize;
+                //    }
 
-                    this.myFallingThings.SetSize(this.dropSize);
-                    break;
-                case SpeechRecognizer.Verbs.Smallest:
-                    this.dropSize = MinShapeSize;
-                    this.myFallingThings.SetSize(this.dropSize);
-                    break;
-                case SpeechRecognizer.Verbs.Faster:
-                    this.dropGravity *= 1.25;
-                    if (this.dropGravity > 4.0)
-                    {
-                        this.dropGravity = 4.0;
-                    }
+                //    this.myFallingThings.SetSize(this.dropSize);
+                //    break;
+                //case SpeechRecognizer.Verbs.Smallest:
+                //    this.dropSize = MinShapeSize;
+                //    this.myFallingThings.SetSize(this.dropSize);
+                //    break;
+                //case SpeechRecognizer.Verbs.Faster:
+                //    this.dropGravity *= 1.25;
+                //    if (this.dropGravity > 4.0)
+                //    {
+                //        this.dropGravity = 4.0;
+                //    }
 
-                    this.myFallingThings.SetGravity(this.dropGravity);
-                    break;
-                case SpeechRecognizer.Verbs.Slower:
-                    this.dropGravity /= 1.25;
-                    if (this.dropGravity < 0.25)
-                    {
-                        this.dropGravity = 0.25;
-                    }
+                //    this.myFallingThings.SetGravity(this.dropGravity);
+                //    break;
+                //case SpeechRecognizer.Verbs.Slower:
+                //    this.dropGravity /= 1.25;
+                //    if (this.dropGravity < 0.25)
+                //    {
+                //        this.dropGravity = 0.25;
+                //    }
 
-                    this.myFallingThings.SetGravity(this.dropGravity);
-                    break;
+                //    this.myFallingThings.SetGravity(this.dropGravity);
+                //    break;
             }
         }
 

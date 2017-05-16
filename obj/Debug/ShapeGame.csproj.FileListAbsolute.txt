@@ -21,26 +21,6 @@ C:\Users\qyn\Desktop\Homework\6.835\ShapeGame\obj\Debug\ShapeGame.pdb
 C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\ShapeGame2\bin\Debug\ShapeGame.exe.config
 C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\ShapeGame2\obj\Debug\ShapeGame.exe
 C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\ShapeGame2\obj\Debug\ShapeGame.pdb
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\ShapeGame.exe.config
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.exe
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.pdb
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\ShapeGame.exe
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\ShapeGame.pdb
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Kinect.dll
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Kinect.Toolkit.dll
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Speech.dll
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Kinect.Toolkit.pdb
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Kinect.xml
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.csprojResolveAssemblyReference.cache
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\MainWindow.baml
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\MainWindow.g.cs
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\App.g.cs
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame_MarkupCompile.cache
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.g.resources
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.Properties.Resources.resources
-C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.csproj.GenerateResource.Cache
 C:\Users\qyn\Desktop\Homework\6.835\finalproject\bin\Debug\ShapeGame.exe.config
 C:\Users\qyn\Desktop\Homework\6.835\finalproject\bin\Debug\ShapeGame.exe
 C:\Users\qyn\Desktop\Homework\6.835\finalproject\bin\Debug\ShapeGame.pdb
@@ -62,3 +42,24 @@ C:\Users\qyn\Desktop\Homework\6.835\finalproject\obj\Debug\ShapeGame.csproj.Gene
 C:\Users\qyn\Desktop\Homework\6.835\finalproject\obj\Debug\ShapeGame.exe
 C:\Users\qyn\Desktop\Homework\6.835\finalproject\obj\Debug\ShapeGame.pdb
 C:\Users\qyn\Desktop\Homework\6.835\finalproject\obj\Debug\ShapeGame_Content.g.cs
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\ShapeGame.exe.config
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\ShapeGame.exe
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\ShapeGame.pdb
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Kinect.dll
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Kinect.Toolkit.dll
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.dll
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Speech.dll
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Samples.Kinect.WpfViewers.pdb
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Kinect.Toolkit.pdb
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\bin\Debug\Microsoft.Kinect.xml
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.csprojResolveAssemblyReference.cache
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\MainWindow.baml
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\MainWindow.g.cs
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\App.g.cs
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame_Content.g.cs
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame_MarkupCompile.cache
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.g.resources
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.Properties.Resources.resources
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.csproj.GenerateResource.Cache
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.exe
+C:\Users\tania\Documents\MIT\Senior Year\6.835\finalproject\SkeletonSpeech\obj\Debug\ShapeGame.pdb

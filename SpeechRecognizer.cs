@@ -24,101 +24,118 @@ namespace ShapeGame.Speech
     {
         private readonly Dictionary<string, WhatSaid> gameplayPhrases = new Dictionary<string, WhatSaid>
             {
-                { "Faster", new WhatSaid { Verb = Verbs.Faster } },
-                { "Slower", new WhatSaid { Verb = Verbs.Slower } },
-                { "Bigger Shapes", new WhatSaid { Verb = Verbs.Bigger } },
-                { "Bigger", new WhatSaid { Verb = Verbs.Bigger } },
-                { "Larger", new WhatSaid { Verb = Verbs.Bigger } },
-                { "Huge", new WhatSaid { Verb = Verbs.Biggest } },
-                { "Giant", new WhatSaid { Verb = Verbs.Biggest } },
-                { "Biggest", new WhatSaid { Verb = Verbs.Biggest } },
-                { "Super Big", new WhatSaid { Verb = Verbs.Biggest } },
-                { "Smaller", new WhatSaid { Verb = Verbs.Smaller } },
-                { "Tiny", new WhatSaid { Verb = Verbs.Smallest } },
-                { "Super Small", new WhatSaid { Verb = Verbs.Smallest } },
-                { "Smallest", new WhatSaid { Verb = Verbs.Smallest } },
-                { "More Shapes", new WhatSaid { Verb = Verbs.More } },
-                { "More", new WhatSaid { Verb = Verbs.More } },
-                { "Less", new WhatSaid { Verb = Verbs.Fewer } },
-                { "Fewer", new WhatSaid { Verb = Verbs.Fewer } },
+                //{ "Faster", new WhatSaid { Verb = Verbs.Faster } },
+                //{ "Slower", new WhatSaid { Verb = Verbs.Slower } },
+                //{ "Bigger Shapes", new WhatSaid { Verb = Verbs.Bigger } },
+                //{ "Bigger", new WhatSaid { Verb = Verbs.Bigger } },
+                //{ "Larger", new WhatSaid { Verb = Verbs.Bigger } },
+                //{ "Huge", new WhatSaid { Verb = Verbs.Biggest } },
+                //{ "Giant", new WhatSaid { Verb = Verbs.Biggest } },
+                //{ "Biggest", new WhatSaid { Verb = Verbs.Biggest } },
+                //{ "Super Big", new WhatSaid { Verb = Verbs.Biggest } },
+                //{ "Smaller", new WhatSaid { Verb = Verbs.Smaller } },
+                //{ "Tiny", new WhatSaid { Verb = Verbs.Smallest } },
+                //{ "Super Small", new WhatSaid { Verb = Verbs.Smallest } },
+                //{ "Smallest", new WhatSaid { Verb = Verbs.Smallest } },
+                //{ "More Shapes", new WhatSaid { Verb = Verbs.More } },
+                //{ "More", new WhatSaid { Verb = Verbs.More } },
+                //{ "Less", new WhatSaid { Verb = Verbs.Fewer } },
+                //{ "Fewer", new WhatSaid { Verb = Verbs.Fewer } },
                 { "Protego", new WhatSaid { Verb = Verbs.Protego } },
+                { "Pro tego", new WhatSaid { Verb = Verbs.Protego } },
+                { "Protaygo", new WhatSaid { Verb = Verbs.Protego } },
+                { "Tego", new WhatSaid { Verb = Verbs.Protego } },
+                { "Taygo", new WhatSaid { Verb = Verbs.Protego } },
+                { "Pro tay go", new WhatSaid { Verb = Verbs.Protego } },
                 { "Expelliarmus", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Expel", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Expelly armus", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Expel arm", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Expellarmus", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Expellarmius", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Expeliarmius", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Expelarmus", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Expeliarmus", new WhatSaid { Verb = Verbs.Expelliarmus } },
+                { "Spelliarmus", new WhatSaid { Verb = Verbs.Expelliarmus } },
                 { "Stupefy", new WhatSaid { Verb = Verbs.Stupefy } },
+                { "Stupify", new WhatSaid { Verb = Verbs.Stupefy } },
+                { "Stew piffy", new WhatSaid { Verb = Verbs.Stupefy } },
+                { "Stupe fie", new WhatSaid { Verb = Verbs.Stupefy } },
             };
 
         private readonly Dictionary<string, WhatSaid> shapePhrases = new Dictionary<string, WhatSaid>
             {
-                { "Seven Pointed Stars", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Star7 } },
-                { "Protego", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Triangle } },
-                { "Expelliarmus", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Square } },
-                { "Stupefy", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Square } },
-                { "Hexagons", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Hex } },
-                { "Pentagons", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Pentagon } },
-                { "Stars", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Star } },
-                { "Circles", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Circle } },
-                { "Balls", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Circle } },
-                { "Bubbles", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Bubble } },
-                { "All Shapes", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.All } },
-                { "Everything", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.All } },
+                //{ "Seven Pointed Stars", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Star7 } },
+                //{ "Protego", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Triangle } },
+                //{ "Expelliarmus", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Square } },
+                //{ "Stupefy", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Square } },
+                //{ "Hexagons", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Hex } },
+                //{ "Pentagons", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Pentagon } },
+                //{ "Stars", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Star } },
+                //{ "Circles", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Circle } },
+                //{ "Balls", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Circle } },
+                //{ "Bubbles", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.Bubble } },
+                //{ "All Shapes", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.All } },
+                //{ "Everything", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.All } },
                 { "Shapes", new WhatSaid { Verb = Verbs.DoShapes, Shape = PolyType.All } },
             };
 
         private readonly Dictionary<string, WhatSaid> colorPhrases = new Dictionary<string, WhatSaid>
             {
-                { "Every Color", new WhatSaid { Verb = Verbs.RandomColors } },
-                { "All Colors", new WhatSaid { Verb = Verbs.RandomColors } },
-                { "Random Colors", new WhatSaid { Verb = Verbs.RandomColors } },
-                {
-                    "Red",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(240, 60, 60) }
-                    },
-                {
-                    "Green",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(60, 240, 60) }
-                    },
-                {
-                    "Blue",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(60, 60, 240) }
-                    },
-                {
-                    "Yellow",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(240, 240, 60) }
-                    },
-                {
-                    "Orange",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(255, 110, 20) }
-                    },
-                {
-                    "Purple",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(70, 30, 255) }
-                    },
-                {
-                    "Violet",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(160, 30, 245) }
-                    },
-                {
-                    "Pink",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(255, 128, 225) }
-                    },
-                {
-                    "Gray",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(192, 192, 192) }
-                    },
-                {
-                    "Brown",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(130, 80, 50) }
-                    },
-                {
-                    "Dark",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(40, 40, 40) }
-                    },
-                {
-                    "Black", new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(5, 5, 5) }
-                    },
-                {
-                    "Bright",
-                    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(240, 240, 240) }
-                    },
+                //{ "Every Color", new WhatSaid { Verb = Verbs.RandomColors } },
+                //{ "All Colors", new WhatSaid { Verb = Verbs.RandomColors } },
+                //{ "Random Colors", new WhatSaid { Verb = Verbs.RandomColors } },
+                //{
+                //    "Red",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(240, 60, 60) }
+                //    },
+                //{
+                //    "Green",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(60, 240, 60) }
+                //    },
+                //{
+                //    "Blue",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(60, 60, 240) }
+                //    },
+                //{
+                //    "Yellow",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(240, 240, 60) }
+                //    },
+                //{
+                //    "Orange",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(255, 110, 20) }
+                //    },
+                //{
+                //    "Purple",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(70, 30, 255) }
+                //    },
+                //{
+                //    "Violet",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(160, 30, 245) }
+                //    },
+                //{
+                //    "Pink",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(255, 128, 225) }
+                //    },
+                //{
+                //    "Gray",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(192, 192, 192) }
+                //    },
+                //{
+                //    "Brown",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(130, 80, 50) }
+                //    },
+                //{
+                //    "Dark",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(40, 40, 40) }
+                //    },
+                //{
+                //    "Black", new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(5, 5, 5) }
+                //    },
+                //{
+                //    "Bright",
+                //    new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(240, 240, 240) }
+                //    },
                 {
                     "White",
                     new WhatSaid { Verb = Verbs.Colorize, Color = System.Windows.Media.Color.FromRgb(255, 255, 255) }
