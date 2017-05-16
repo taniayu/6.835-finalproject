@@ -50,7 +50,7 @@ namespace ShapeGame
         private const double MaxFramerate = 70;
         private const double MinFramerate = 15;
         private const double MinShapeSize = 12;
-        private const double MaxShapeSize = 120;
+        private const double MaxShapeSize = 150;
         private const double DefaultDropRate = 2.5;
         private const double DefaultDropSize = 50.0;
         private const double DefaultDropGravity = 0;
@@ -172,7 +172,7 @@ namespace ShapeGame
 
             //dllResult = Loadme(2.0);
 
-            FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Shapes!");
+            FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Defend yourself!");
         }
 
         private void WindowClosing(object sender, CancelEventArgs e)
@@ -520,7 +520,7 @@ namespace ShapeGame
                     {
                         // Game over
                         this.myFallingThings.PauseGame();
-                        FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Game over!");
+                        FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Game over!", System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
                     }
                     //HitType hit = this.myFallingThings.LookForHits(pair.Value.Segments, pair.Value.GetId());
                     //if ((hit & HitType.Squeezed) != 0)

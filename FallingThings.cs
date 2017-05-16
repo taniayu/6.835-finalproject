@@ -155,6 +155,7 @@ namespace ShapeGame
 
             this.gameStartTime = DateTime.Now;
             this.scores.Clear();
+            this.score = 0;
             this.gamePaused = false;
         }
 

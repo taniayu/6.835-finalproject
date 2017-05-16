@@ -36,9 +36,25 @@ namespace ShapeGame
             this.brush = null;
         }
 
+        public FlyingText(string s, double size, System.Windows.Point center, Color brushColor)
+        {
+            this.text = s;
+            this.fontSize = Math.Max(1, size);
+            this.fontGrow = Math.Sqrt(size) * 0.4;
+            this.center = center;
+            this.alpha = 1.0;
+            this.label = null;
+            this.brush = new SolidColorBrush(brushColor);
+        }
+
         public static void NewFlyingText(double size, System.Windows.Point center, string s)
         {
             FlyingTexts.Add(new FlyingText(s, size, center));
+        }
+
+        public static void NewFlyingText(double size, System.Windows.Point center, string s, Color brushColor)
+        {
+            FlyingTexts.Add(new FlyingText(s, size, center, brushColor));
         }
 
         public static void Draw(UIElementCollection children)
