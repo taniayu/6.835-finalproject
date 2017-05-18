@@ -548,7 +548,7 @@ namespace ShapeGame
                 player.Value.Draw(playfield.Children);
             }
 
-            BannerText.Draw(playfield.Children);
+            //BannerText.Draw(playfield.Children);
             FlyingText.Draw(playfield.Children);
 
             this.CheckPlayers();
