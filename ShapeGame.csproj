@@ -39,7 +39,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
@@ -163,7 +163,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="bg.jpg" />
-    <Content Include="grt.dll" />
     <Resource Include="hand.jpg" />
     <Resource Include="hand.png" />
     <Resource Include="head.jpg" />
