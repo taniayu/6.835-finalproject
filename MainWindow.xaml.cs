@@ -1,4 +1,7 @@
-﻿//------------------------------------------------------------------------------
+﻿// Authors: Chandani Doshi, Yini Qi, Tania Yu
+// Microsoft sample code taken as a basis for game control system.
+
+//------------------------------------------------------------------------------
 // <copyright file="MainWindow.xaml.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -33,9 +36,6 @@ namespace ShapeGame
     /// 
     public partial class MainWindow : Window
     {
-        //[DllImport("grt.dll")]
-        //public static extern double Loadme(double num);
-
         public static readonly DependencyProperty KinectSensorManagerProperty =
             DependencyProperty.Register(
                 "KinectSensorManager",
@@ -80,6 +80,7 @@ namespace ShapeGame
         private FallingThings myFallingThings;
         private int playersAlive;
 
+        // Moving window for gesture recognition
         private static int FRAME_SIZE = 200;
 
         private List<Double> rightWristXPosition = new List<Double>(new double[FRAME_SIZE]);
@@ -89,11 +90,11 @@ namespace ShapeGame
         private List<Double> shoulderCenterXPosition = new List<Double>(new double[FRAME_SIZE]);
         private List<Double> shoulderCenterYPosition = new List<Double>(new double[FRAME_SIZE]);
 
+        // Remaining frame duration for shield to be displayed on screen
         private int protegoDuration = 0;
 
         private SpeechRecognizer mySpeechRecognizer;
 
-        //public double dllResult = 0;
         #endregion Private State
 
         #region ctor + Window Events
@@ -162,15 +163,10 @@ namespace ShapeGame
             this.hitSound.Stream = Properties.Resources.Hit_2;
             this.squeezeSound.Stream = Properties.Resources.Squeeze;
 
-            this.popSound.Play();
-
             TimeBeginPeriod(TimerResolution);
             var myGameThread = new Thread(this.GameThread);
             myGameThread.SetApartmentState(ApartmentState.STA);
             myGameThread.Start();
-
-
-            //dllResult = Loadme(2.0);
 
             FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Defend yourself!");
         }
@@ -480,11 +476,11 @@ namespace ShapeGame
                 this.myFallingThings.SetFramerate(1000.0 / this.actualFrameTime);
             }
 
-            // Advance animations, and do hit testing.
+            // Advance animations, save current skeleton state, and do hit testing.
             for (int i = 0; i < NumIntraFrames; ++i)
             {
                 BoneData rightShoulderData = new BoneData();
-                foreach (var pair in this.players)
+                foreach (var pair in this.players) // Although our game is designed for one player, this gives us the potential for multiplayer
                 {
                     Bone rightArm = new Bone(JointType.WristRight, JointType.ElbowRight);
                     BoneData rightArmData;
@@ -505,6 +501,7 @@ namespace ShapeGame
                     this.shoulderCenterYPosition.RemoveAt(0);
                     this.shoulderCenterYPosition.Add(rightShoulderData.Segment.Y1);
 
+                    // Decrement protegoDuration each frame until 0, at which point 
                     if (this.protegoDuration > 0)
                     {
                         this.protegoDuration -= 1;
@@ -521,20 +518,8 @@ namespace ShapeGame
                         // Game over
                         this.myFallingThings.PauseGame();
                         FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Game over!", System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
+                        this.squeezeSound.Play();
                     }
-                    //HitType hit = this.myFallingThings.LookForHits(pair.Value.Segments, pair.Value.GetId());
-                    //if ((hit & HitType.Squeezed) != 0)
-                    //{
-                    //    this.squeezeSound.Play();
-                    //}
-                    //else if ((hit & HitType.Popped) != 0)
-                    //{
-                    //    this.popSound.Play();
-                    //}
-                    //else if ((hit & HitType.Hand) != 0)
-                    //{
-                    //    this.hitSound.Play();
-                    //}
                 }
 
                 this.myFallingThings.AdvanceFrame(rightShoulderData.Segment.X1, rightShoulderData.Segment.Y1);
@@ -548,7 +533,6 @@ namespace ShapeGame
                 player.Value.Draw(playfield.Children);
             }
 
-            //BannerText.Draw(playfield.Children);
             FlyingText.Draw(playfield.Children);
 
             this.CheckPlayers();
@@ -558,7 +542,6 @@ namespace ShapeGame
         #region Kinect Speech processing
         private void RecognizerSaidSomething(object sender, SpeechRecognizer.SaidSomethingEventArgs e)
         {
-            //FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), e.Matched);
             switch (e.Verb)
             {
                 case SpeechRecognizer.Verbs.Protego:
@@ -567,45 +550,40 @@ namespace ShapeGame
                     double averageYWristPosition = this.rightWristYPosition.Sum() / FRAME_SIZE;
                     double averageXBodyPosition = this.shoulderCenterXPosition.Sum() / FRAME_SIZE;
                     double averageYBodyPosition = this.shoulderCenterYPosition.Sum() / FRAME_SIZE;
-                    double dist = Math.Pow(averageXWristPosition - averageXBodyPosition, 2) + Math.Pow(averageYWristPosition - averageYBodyPosition, 2);
-                    //FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), dist.ToString());
-                    if (dist < 3000)
+                    double squaredDist = Math.Pow(averageXWristPosition - averageXBodyPosition, 2) + Math.Pow(averageYWristPosition - averageYBodyPosition, 2);
+                    // Wrist must be within sqrt(3000) distance of shoulder center (sternum)
+                    if (squaredDist < 3000)
                     {
                         this.myFallingThings.moveThingsAway();
                         this.myFallingThings.DrawShape(PolyType.Circle, MaxShapeSize, System.Windows.Media.Color.FromRgb(255, 255, 255));
-                        this.protegoDuration = 300;
+                        this.protegoDuration = 300; // Shield is displayed for 300 frames
+                        this.hitSound.Play();
                     }
                     break;
                 case SpeechRecognizer.Verbs.Expelliarmus:
                     FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Expelliarmus");
+                    // We take the oldest 1/3 of frames within our window to compensate for delay of speech recognition
                     double averageXVelocity = this.rightWristXVelocity.Take(Convert.ToInt32(FRAME_SIZE / 3)).Sum() * 3 / FRAME_SIZE;
-                    //double xMoved = this.rightWristXPosition[Convert.ToInt32(FRAME_SIZE / 3)] - this.rightWristXPosition[0];
-                    //FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), averageXVelocity.ToString());
-                    if (averageXVelocity > 0)
+                    double xMoved = Math.Abs(this.rightWristXPosition[Convert.ToInt32(FRAME_SIZE / 3)] - this.rightWristXPosition[0]);
+                    // Must be moving left to right, and must have moved a specified minimum distance
+                    if (averageXVelocity > 0 && xMoved > 50)
                     {
                         this.myFallingThings.removeThings();
                         this.myFallingThings.AddToScore(0, 10, new Point(this.shoulderCenterXPosition.Sum() / FRAME_SIZE, this.shoulderCenterYPosition.Sum() / FRAME_SIZE));
+                        this.popSound.Play();
                     }
                     break;
                 case SpeechRecognizer.Verbs.Stupefy:
                     FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Stupefy");
                     double averageYVelocity = this.rightWristYVelocity.Sum() / FRAME_SIZE;
+                    // Must be moving up to down
                     if (averageYVelocity > 0)
-                    //if (true)
                     {
                         this.myFallingThings.SetSpinRate(0);
-                        //this.myFallingThings.SetDropRate(0);
                         this.myFallingThings.SetGravity(0);
                         this.myFallingThings.AddToScore(0, 5, new Point(this.shoulderCenterXPosition.Sum() / FRAME_SIZE, this.shoulderCenterYPosition.Sum() / FRAME_SIZE));
+                        this.hitSound.Play();
                     }
-                    break;
-                //case SpeechRecognizer.Verbs.Pause:
-                //    this.myFallingThings.SetDropRate(0);
-                //    this.myFallingThings.SetGravity(0);
-                //    break;
-                case SpeechRecognizer.Verbs.Resume:
-                    this.myFallingThings.SetDropRate(this.dropRate);
-                    this.myFallingThings.SetGravity(this.dropGravity);
                     break;
                 case SpeechRecognizer.Verbs.Reset:
                     FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Reset");
@@ -619,71 +597,6 @@ namespace ShapeGame
                     this.myFallingThings.SetShapesColor(System.Windows.Media.Color.FromRgb(0, 0, 0), true);
                     this.myFallingThings.Reset();
                     break;
-                //case SpeechRecognizer.Verbs.DoShapes:
-                //    this.myFallingThings.SetPolies(e.Shape);
-                //    break;
-                //case SpeechRecognizer.Verbs.RandomColors:
-                //    this.myFallingThings.SetShapesColor(System.Windows.Media.Color.FromRgb(0, 0, 0), true);
-                //    break;
-                //case SpeechRecognizer.Verbs.Colorize:
-                //    this.myFallingThings.SetShapesColor(e.RgbColor, false);
-                //    break;
-                //case SpeechRecognizer.Verbs.ShapesAndColors:
-                //    this.myFallingThings.SetPolies(e.Shape);
-                //    this.myFallingThings.SetShapesColor(e.RgbColor, false);
-                //    break;
-                //case SpeechRecognizer.Verbs.More:
-                //    this.dropRate *= 1.5;
-                //    this.myFallingThings.SetDropRate(this.dropRate);
-                //    break;
-                //case SpeechRecognizer.Verbs.Fewer:
-                //    this.dropRate /= 1.5;
-                //    this.myFallingThings.SetDropRate(this.dropRate);
-                //    break;
-                //case SpeechRecognizer.Verbs.Bigger:
-                //    this.dropSize *= 1.5;
-                //    if (this.dropSize > MaxShapeSize)
-                //    {
-                //        this.dropSize = MaxShapeSize;
-                //    }
-
-                //    this.myFallingThings.SetSize(this.dropSize);
-                //    break;
-                //case SpeechRecognizer.Verbs.Biggest:
-                //    this.dropSize = MaxShapeSize;
-                //    this.myFallingThings.SetSize(this.dropSize);
-                //    break;
-                //case SpeechRecognizer.Verbs.Smaller:
-                //    this.dropSize /= 1.5;
-                //    if (this.dropSize < MinShapeSize)
-                //    {
-                //        this.dropSize = MinShapeSize;
-                //    }
-
-                //    this.myFallingThings.SetSize(this.dropSize);
-                //    break;
-                //case SpeechRecognizer.Verbs.Smallest:
-                //    this.dropSize = MinShapeSize;
-                //    this.myFallingThings.SetSize(this.dropSize);
-                //    break;
-                //case SpeechRecognizer.Verbs.Faster:
-                //    this.dropGravity *= 1.25;
-                //    if (this.dropGravity > 4.0)
-                //    {
-                //        this.dropGravity = 4.0;
-                //    }
-
-                //    this.myFallingThings.SetGravity(this.dropGravity);
-                //    break;
-                //case SpeechRecognizer.Verbs.Slower:
-                //    this.dropGravity /= 1.25;
-                //    if (this.dropGravity < 0.25)
-                //    {
-                //        this.dropGravity = 0.25;
-                //    }
-
-                //    this.myFallingThings.SetGravity(this.dropGravity);
-                //    break;
             }
         }
 

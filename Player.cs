@@ -1,4 +1,7 @@
-﻿//------------------------------------------------------------------------------
+﻿// Authors: Chandani Doshi, Yini Qi, Tania Yu
+// Microsoft sample code taken as a basis for player skeleton update and visualization.
+
+//------------------------------------------------------------------------------
 // <copyright file="Player.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -172,17 +175,6 @@ namespace ShapeGame
                 }
                 else if (seg.IsCircle())
                     {
-                        //Image img = new Image
-                        //{
-                        //    Width = 50,
-                        //    Height = 50,
-                        //    Source = new BitmapImage(new Uri("C:/Users/qyn/Desktop/Homework/6.835/finalproject/Images/hand.png", UriKind.Absolute)),
-                        //};
-
-                        //Canvas.SetLeft(img, seg.X1 - img.Width / 2 );
-                        //Canvas.SetTop(img, seg.Y1 - img.Height / 2 );
-                        //var overlayImage = new BitmapImage(new Uri("Images/glove_right.png"));
-                        //drawingContext.DrawImage(overlayImage, new Rect(joint.MappedPoint.X, joint.MappedPoint.Y, overlayImage.Width, overlayImage.Height));
                         var circle = new Ellipse { Width = seg.Radius * 2, Height = seg.Radius * 2 };
                         circle.SetValue(Canvas.LeftProperty, seg.X1 - seg.Radius );
                         circle.SetValue(Canvas.TopProperty, seg.Y1 - seg.Radius );

@@ -1,4 +1,7 @@
-﻿//------------------------------------------------------------------------------
+﻿// Authors: Chandani Doshi, Yini Qi, Tania Yu
+// Microsoft sample code taken as a basis for generating obstacles in our game.
+
+//------------------------------------------------------------------------------
 // <copyright file="FallingThings.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
@@ -218,19 +221,11 @@ namespace ShapeGame
             }
 
             DateTime cur = DateTime.Now;
-            HitType allHits = HitType.None;
-
-            // Zero out score if necessary
-            if (!this.scores.ContainsKey(playerId))
-            {
-                this.scores.Add(playerId, 0);
-            }
 
             foreach (var pair in segments)
             {
                 for (int i = 0; i < this.things.Count; i++)
                 {
-                    HitType hit = HitType.None;
                     Thing thing = this.things[i];
                     if (thing.Shape == PolyType.Circle)
                     {
@@ -238,7 +233,6 @@ namespace ShapeGame
                     }
                     switch (thing.State)
                     {
-                        case ThingState.Bouncing:
                         case ThingState.Falling:
                             {
                                 var hitCenter = new System.Windows.Point(0, 0);
@@ -255,162 +249,6 @@ namespace ShapeGame
             }
 
             return false;
-        }
-
-        public HitType LookForHits(Dictionary<Bone, BoneData> segments, int playerId)
-        {
-            DateTime cur = DateTime.Now;
-            HitType allHits = HitType.None;
-
-            // Zero out score if necessary
-            if (!this.scores.ContainsKey(playerId))
-            {
-                this.scores.Add(playerId, 0);
-            }
-
-            foreach (var pair in segments)
-            {
-                for (int i = 0; i < this.things.Count; i++)
-                {
-                    HitType hit = HitType.None;
-                    Thing thing = this.things[i];
-                    switch (thing.State)
-                    {
-                        case ThingState.Bouncing:
-                        case ThingState.Falling:
-                            {
-                                var hitCenter = new System.Windows.Point(0, 0);
-                                double lineHitLocation = 0;
-                                Segment seg = pair.Value.GetEstimatedSegment(cur);
-                                if (thing.Hit(seg, ref hitCenter, ref lineHitLocation))
-                                {
-                                    double fMs = 1000;
-                                    if (thing.TimeLastHit != DateTime.MinValue)
-                                    {
-                                        fMs = cur.Subtract(thing.TimeLastHit).TotalMilliseconds;
-                                        thing.AvgTimeBetweenHits = (thing.AvgTimeBetweenHits * 0.8) + (0.2 * fMs);
-                                    }
-
-                                    thing.TimeLastHit = cur;
-
-                                    // Bounce off head and hands
-                                    if (seg.IsCircle())
-                                    {
-                                        // Bounce off of hand/head/foot
-                                        thing.BounceOff(
-                                            hitCenter.X,
-                                            hitCenter.Y,
-                                            seg.Radius,
-                                            pair.Value.XVelocity / this.targetFrameRate,
-                                            pair.Value.YVelocity / this.targetFrameRate);
-
-                                        if (fMs > 100.0)
-                                        {
-                                            hit |= HitType.Hand;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        // Bounce off line segment
-                                        double velocityX = (pair.Value.XVelocity * (1.0 - lineHitLocation)) + (pair.Value.XVelocity2 * lineHitLocation);
-                                        double velocityY = (pair.Value.YVelocity * (1.0 - lineHitLocation)) + (pair.Value.YVelocity2 * lineHitLocation);
-
-                                        thing.BounceOff(
-                                            hitCenter.X,
-                                            hitCenter.Y,
-                                            seg.Radius,
-                                            velocityX / this.targetFrameRate,
-                                            velocityY / this.targetFrameRate);
-
-                                        if (fMs > 100.0)
-                                        {
-                                            hit |= HitType.Arm;
-                                        }
-                                    }
-
-                                    if (this.gameMode == GameMode.TwoPlayer)
-                                    {
-                                        if (thing.State == ThingState.Falling)
-                                        {
-                                            thing.State = ThingState.Bouncing;
-                                            thing.TouchedBy = playerId;
-                                            thing.Hotness = 1;
-                                            thing.FlashCount = 0;
-                                        }
-                                        else if (thing.State == ThingState.Bouncing)
-                                        {
-                                            if (thing.TouchedBy != playerId)
-                                            {
-                                                if (seg.IsCircle())
-                                                {
-                                                    thing.TouchedBy = playerId;
-                                                    thing.Hotness = Math.Min(thing.Hotness + 1, 4);
-                                                }
-                                                else
-                                                {
-                                                    hit |= HitType.Popped;
-                                                    this.AddToScore(thing.TouchedBy, 5 << (thing.Hotness - 1), thing.Center);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else if (this.gameMode == GameMode.Solo)
-                                    {
-                                        if (seg.IsCircle())
-                                        {
-                                            if (thing.State == ThingState.Falling)
-                                            {
-                                                thing.State = ThingState.Bouncing;
-                                                thing.TouchedBy = playerId;
-                                                thing.Hotness = 1;
-                                                thing.FlashCount = 0;
-                                            }
-                                            else if ((thing.State == ThingState.Bouncing) && (fMs > 100.0))
-                                            {
-                                                hit |= HitType.Popped;
-                                                int points = (pair.Key.Joint1 == JointType.FootLeft
-                                                              || pair.Key.Joint1 == JointType.FootRight)
-                                                                 ? 10
-                                                                 : 5;
-                                                this.AddToScore(
-                                                    thing.TouchedBy,
-                                                    points,
-                                                    thing.Center);
-                                                thing.TouchedBy = playerId;
-                                            }
-                                        }
-                                    }
-
-                                    this.things[i] = thing;
-
-                                    if (thing.AvgTimeBetweenHits < 8)
-                                    {
-                                        hit |= HitType.Popped | HitType.Squeezed;
-                                        if (this.gameMode != GameMode.Off)
-                                        {
-                                            this.AddToScore(playerId, 1, thing.Center);
-                                        }
-                                    }
-                                }
-                            }
-
-                            break;
-                    }
-
-                    if ((hit & HitType.Popped) != 0)
-                    {
-                        thing.State = ThingState.Dissolving;
-                        thing.Dissolve = 0;
-                        thing.XVelocity = thing.YVelocity = 0;
-                        thing.SpinRate = (thing.SpinRate * 6) + 0.2;
-                        this.things[i] = thing;
-                    }
-
-                    allHits |= hit;
-                }
-            }
-
-            return allHits;
         }
 
         public void removeThings()

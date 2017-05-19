@@ -1,4 +1,7 @@
-﻿//------------------------------------------------------------------------------
+﻿// Authors: Chandani Doshi, Yini Qi, Tania Yu
+// Microsoft sample code taken as a basis for displaying pop-up text on screen.
+
+//------------------------------------------------------------------------------
 // <copyright file="FlyingText.cs" company="Microsoft">
 //     Copyright (c) Microsoft Corporation.  All rights reserved.
 // </copyright>
