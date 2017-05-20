@@ -10,7 +10,7 @@ This is a Kinect-PC game that allows users to cast spells in real time using ges
 * Windows 10 x64 (untested on other OS)
 * Kinect for Windows SDK v1.8
 * Microsoft Speech Platform SDK v11.0
-* Visual Studio 2015 (or later)
+* Visual Studio 2015 or later (for building the project)
 * .NET Framework 4
 
 ## Build Instructions
