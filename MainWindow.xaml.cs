@@ -93,6 +93,8 @@ namespace ShapeGame
         // Remaining frame duration for shield to be displayed on screen
         private int protegoDuration = 0;
 
+        private bool gamePaused = false;
+
         private SpeechRecognizer mySpeechRecognizer;
 
         #endregion Private State
@@ -517,6 +519,7 @@ namespace ShapeGame
                     {
                         // Game over
                         this.myFallingThings.PauseGame();
+                        this.gamePaused = true;
                         FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Game over!", System.Windows.Media.Color.FromArgb(255, 255, 0, 0));
                         this.squeezeSound.Play();
                     }
@@ -545,6 +548,8 @@ namespace ShapeGame
             switch (e.Verb)
             {
                 case SpeechRecognizer.Verbs.Protego:
+                    if (gamePaused)
+                        return;
                     FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Protego");
                     double averageXWristPosition = this.rightWristXPosition.Sum() / FRAME_SIZE;
                     double averageYWristPosition = this.rightWristYPosition.Sum() / FRAME_SIZE;
@@ -561,12 +566,14 @@ namespace ShapeGame
                     }
                     break;
                 case SpeechRecognizer.Verbs.Expelliarmus:
+                    if (gamePaused)
+                        return;
                     FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Expelliarmus");
                     // We take the oldest 1/3 of frames within our window to compensate for delay of speech recognition
                     double averageXVelocity = this.rightWristXVelocity.Take(Convert.ToInt32(FRAME_SIZE / 3)).Sum() * 3 / FRAME_SIZE;
-                    double xMoved = Math.Abs(this.rightWristXPosition[Convert.ToInt32(FRAME_SIZE / 3)] - this.rightWristXPosition[0]);
+                    double xMoved = Math.Abs(this.rightWristXPosition[Convert.ToInt32(FRAME_SIZE / 2)] - this.rightWristXPosition[0]);
                     // Must be moving left to right, and must have moved a specified minimum distance
-                    if (averageXVelocity > 0 && xMoved > 50)
+                    if (averageXVelocity > 0 && xMoved > 10)
                     {
                         this.myFallingThings.removeThings();
                         this.myFallingThings.AddToScore(0, 10, new Point(this.shoulderCenterXPosition.Sum() / FRAME_SIZE, this.shoulderCenterYPosition.Sum() / FRAME_SIZE));
@@ -574,6 +581,8 @@ namespace ShapeGame
                     }
                     break;
                 case SpeechRecognizer.Verbs.Stupefy:
+                    if (gamePaused)
+                        return;
                     FlyingText.NewFlyingText(this.screenRect.Width / 30, new Point(this.screenRect.Width / 2, this.screenRect.Height / 2), "Stupefy");
                     double averageYVelocity = this.rightWristYVelocity.Sum() / FRAME_SIZE;
                     // Must be moving up to down
@@ -596,6 +605,7 @@ namespace ShapeGame
                     this.myFallingThings.SetSize(this.dropSize);
                     this.myFallingThings.SetShapesColor(System.Windows.Media.Color.FromRgb(0, 0, 0), true);
                     this.myFallingThings.Reset();
+                    this.gamePaused = false;
                     break;
             }
         }
