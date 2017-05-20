@@ -1,6 +1,8 @@
 # Harry Potter Wizarding Simulation
 This is a Kinect-PC game that allows users to cast spells in real time using gesture and speech, just like a wizard in *Harry Potter* would.
 
+Source code: https://github.com/taniayu/6.835-finalproject
+
 ## Installation Requirements
 ### Hardware
 * PC
